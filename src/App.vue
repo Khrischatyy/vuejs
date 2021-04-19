@@ -9,11 +9,13 @@
       </span>
     </div>
     <div class="content__catalog">
-      <product-filter :price-from="filterPriceFrom" :price-to="filterPriceTo" :category-id="filterCategoryId"></product-filter>
+      <product-filter :price-from="filterPriceFrom" :price-to="filterPriceTo"
+                      :category-id="filterCategoryId"></product-filter>
       <section class="catalog">
         <product-list :products="products"></product-list>
 
-        <base-pagination v-model="page" :per-page="productPerPage" :count="countProducts"></base-pagination>
+        <base-pagination v-model="page" :per-page="productPerPage"
+                         :count="countProducts"></base-pagination>
       </section>
     </div>
   </main>
@@ -22,16 +24,16 @@
 
 <script>
 import products from './data/data';
-import ProductList from './components/ProductList';
-import BasePagination from './components/BasePagination';
-import ProductFilter from './components/ProductFilter';
+import ProductList from './components/ProductList.vue';
+import BasePagination from './components/BasePagination.vue';
+import ProductFilter from './components/ProductFilter.vue';
 
 export default {
   name: 'App',
   components: {
     ProductFilter,
     BasePagination,
-    ProductList
+    ProductList,
   },
   data() {
     return {
@@ -46,13 +48,16 @@ export default {
     filteredProducts() {
       let filteredProducts = products;
       if (this.filterPriceFrom > 0) {
-        filteredProducts = filteredProducts.filter(product => product.price > this.filterPriceFrom);
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((product) => product.price > this.filterPriceFrom);
       }
       if (this.filterPriceTo > 0) {
-        filteredProducts = filteredProducts.filter(product => product.price < this.filterPriceTo);
+        filteredProducts = filteredProducts
+          .filter((product) => product.price < this.filterPriceTo);
       }
       if (this.filterCategoryId) {
-        filteredProducts = filteredProducts.filter(product => product.categorieID === this.filterCategoryId);
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((product) => product.categorieID === this.filterCategoryId);
       }
       return filteredProducts;
     },
@@ -62,7 +67,7 @@ export default {
     },
     countProducts() {
       return this.filteredProducts.length;
-    }
-  }
+    },
+  },
 };
 </script>
