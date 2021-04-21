@@ -9,8 +9,8 @@
       </span>
     </div>
     <div class="content__catalog">
-      <product-filter :price-from="filterPriceFrom" :price-to="filterPriceTo"
-                      :category-id="filterCategoryId"></product-filter>
+      <product-filter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
+                      :category-id.sync="filterCategoryId"></product-filter>
       <section class="catalog">
         <product-list :products="products"></product-list>
 
