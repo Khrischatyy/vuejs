@@ -1,9 +1,4 @@
-const message = 'First message';
-const data = {
+export const message = 'First message';
+export const data = {
   message,
 };
-
-export default function first() {
-  alert(message);
-  alert(data.message);
-}

@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 
-import first from './first';
+import { message, data } from './first';
+import sayWord from './second';
 
 Vue.config.productionTip = false;
 
@@ -9,4 +10,5 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
-first();
+sayWord(message);
+sayWord(data.message);

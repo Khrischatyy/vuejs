@@ -48,16 +48,16 @@ export default {
     filteredProducts() {
       let filteredProducts = products;
       if (this.filterPriceFrom > 0) {
-        // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((product) => product.price > this.filterPriceFrom);
+        filteredProducts = filteredProducts
+          .filter((product) => product.price > this.filterPriceFrom);
       }
       if (this.filterPriceTo > 0) {
         filteredProducts = filteredProducts
           .filter((product) => product.price < this.filterPriceTo);
       }
       if (this.filterCategoryId) {
-        // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((product) => product.categorieID === this.filterCategoryId);
+        filteredProducts = filteredProducts
+          .filter((product) => product.categorieID === this.filterCategoryId);
       }
       return filteredProducts;
     },
