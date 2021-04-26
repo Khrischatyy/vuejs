@@ -17,7 +17,8 @@
       <fieldset class="form__block">
         <legend class="form__legend">Категория</legend>
         <label class="form__label form__label--select">
-          <select class="form__select" type="text" name="category" v-model.number="currentCategoryId">
+          <select class="form__select"
+                  name="category" v-model.number="currentCategoryId">
             <option value="0">Все категории</option>
             <option :value="category.id" v-for="category in categories"
                     :key="category.id">{{ category.title }}
@@ -31,7 +32,8 @@
         <ul class="colors">
           <li class="colors__item">
             <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#73B6EA" checked="">
+              <input class="colors__radio sr-only"
+                     type="radio" name="color" value="#73B6EA" checked="">
               <span class="colors__value" style="background-color: #73B6EA;">
                   </span>
             </label>
@@ -81,7 +83,8 @@
         <ul class="check-list">
           <li class="check-list__item">
             <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="8" checked="">
+              <input class="check-list__check sr-only"
+                     type="checkbox" name="volume" value="8" checked="">
               <span class="check-list__desc">
                     8
                     <span>(313)</span>

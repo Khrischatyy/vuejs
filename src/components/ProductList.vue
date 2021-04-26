@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ProductItem from './ProductItem';
+import ProductItem from './ProductItem.vue';
 
 export default {
   name: 'ProductList',
