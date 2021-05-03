@@ -1,7 +1,8 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow pagination__link--disabled"
+      <a @click.prevent="decrement"
+         href="#" class="pagination__link pagination__link--arrow pagination__link--arrow"
          aria-label="Предыдущая страница">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
@@ -14,8 +15,9 @@
         {{pageNumber}}
       </a>
     </li>
-    <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow" href="#" aria-label="Следующая страница">
+    <li @click.prevent="increment"  class="pagination__item">
+      <a class="pagination__link pagination__link--arrow"
+         href="#" aria-label="Следующая страница">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
         </svg>
@@ -40,6 +42,16 @@ export default {
   methods: {
     paginate(pageNumber) {
       this.$emit('paginate', pageNumber);
+    },
+    increment() {
+      if (this.page < this.pages) {
+        this.$emit('paginate', this.page + 1);
+      }
+    },
+    decrement() {
+      if (this.page > 1) {
+        this.$emit('paginate', this.page - 1);
+      }
     },
   },
 };

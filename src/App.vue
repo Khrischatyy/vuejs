@@ -9,7 +9,8 @@
       </span>
     </div>
     <div class="content__catalog">
-      <product-filter :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
+      <product-filter :color.sync="color"
+                      :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
                       :category-id.sync="filterCategoryId"></product-filter>
       <section class="catalog">
         <product-list :products="products"></product-list>
@@ -37,6 +38,7 @@ export default {
   },
   data() {
     return {
+      color: '',
       filterPriceFrom: 0,
       filterPriceTo: 0,
       filterCategoryId: 0,
@@ -57,7 +59,11 @@ export default {
       }
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts
-          .filter((product) => product.categorieID === this.filterCategoryId);
+          .filter((product) => product.categoryID === this.filterCategoryId);
+      }
+      if (this.color !== '') {
+        filteredProducts = filteredProducts
+          .filter((product) => product.color === this.color);
       }
       return filteredProducts;
     },
