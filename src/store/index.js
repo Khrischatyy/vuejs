@@ -11,4 +11,18 @@ export default new Vuex.Store({
       },
     ],
   },
+  mutations: {
+    addProductToCart(state, { productId, amount }) {
+      const productInCart = state.cartProducts.find((item) => item.productId === productId);
+
+      if (productInCart) {
+        productInCart.amount += amount;
+      } else {
+        state.cartProducts.push({
+          productId,
+          amount,
+        });
+      }
+    },
+  },
 });
