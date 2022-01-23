@@ -1,4 +1,4 @@
-# skillbox
+# vuejs project
 
 ## Project setup
 ```
