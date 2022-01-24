@@ -24,7 +24,7 @@
       <div class="item__pics pics">
         <div class="pics__wrapper">
           <img width="570" height="570"
-               :src="product.image" srcset="img/phone-square@2x.jpg 2x" :alt="product.title">
+               :src="product.image" :alt="product.title">
         </div>
       </div>
 
@@ -99,18 +99,17 @@
                 </li>
               </ul>
             </fieldset>
-
             <div class="item__row">
               <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар">
+                <button type="button" aria-label="Убрать один товар" @click.prevent="minusProduct">
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-minus"></use>
                   </svg>
                 </button>
 
-                <input type="text" v-model.number="productAmount">
+                <input type="number" v-model.number="productAmount">
 
-                <button type="button" aria-label="Добавить один товар">
+                <button type="button" aria-label="Добавить один товар" @click.prevent="plusProduct">
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-plus"></use>
                   </svg>
@@ -231,6 +230,14 @@ export default {
         'addProductToCart',
         { productId: this.product.id, amount: this.productAmount },
       );
+    },
+    plusProduct() {
+      this.productAmount += 1;
+    },
+    minusProduct() {
+      if (this.productAmount > 1) {
+        this.productAmount -= 1;
+      }
     },
   },
 };
