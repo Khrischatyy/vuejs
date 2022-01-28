@@ -118,9 +118,23 @@
 
 <script>
 
+import { mapActions, mapMutations } from 'vuex';
 import Cartindecator from './components/Cartindecator.vue';
 
 export default {
   components: { Cartindecator },
+  created() {
+    const userAccessKey = localStorage.getItem('userAccessKey');
+
+    if (userAccessKey) {
+      this.updateUserAccessKey(userAccessKey);
+    }
+
+    this.loadCart();
+  },
+  methods: {
+    ...mapActions(['loadCart']),
+    ...mapMutations(['updateUserAccessKey']),
+  },
 };
 </script>
