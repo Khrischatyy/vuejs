@@ -80,7 +80,7 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <li class="cart__order" v-for="item in orderInfo.basket.items" :key="item">
+            <li class="cart__order" v-for="item in orderInfo.basket.items" :key="item.productId">
               <h3>{{ item.product.title}}</h3>
               <b>{{item.product.price}} ₽ x {{item.quantity}}</b>
               <span>Артикул: {{item.product.id}}</span>
