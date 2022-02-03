@@ -1,7 +1,7 @@
 <template>
   <div class="product__counter form__counter">
     <button type="button" aria-label="Убрать один товар"
-            @click.prevent="minusProduct(minusProduct)">
+            @click.prevent="minusProduct()">
       <svg width="10" height="10" fill="currentColor">
         <use xlink:href="#icon-minus"></use>
       </svg>
@@ -10,7 +10,7 @@
     <input type="number" v-model.number="amount" name="count">
 
     <button type="button" aria-label="Добавить один товар"
-            @click.prevent="plusProduct(productId)">
+            @click.prevent="plusProduct()">
       <svg width="10" height="10" fill="currentColor">
         <use xlink:href="#icon-plus"></use>
       </svg>
@@ -25,10 +25,14 @@ export default {
   props: ['amount', 'productId'],
   methods: {
     plusProduct() {
-      this.$store.commit('increment', { productId: this.productId });
+      this.$store.dispatch('updateCartProductAmount', { productId: this.productId, amount: this.amount + 1 });
     },
     minusProduct() {
-      this.$store.commit('decrement', { productId: this.productId });
+      if (this.amount === 1) {
+        this.$store.dispatch('deleteCartProduct', { productId: this.productId });
+      } else {
+        this.$store.dispatch('updateCartProductAmount', { productId: this.productId, amount: this.amount - 1 });
+      }
     },
   },
 };

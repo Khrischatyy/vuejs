@@ -77,6 +77,7 @@ export default {
             categoryId: this.filterCategoryId,
             minPrice: this.filterPriceFrom,
             maxPrice: this.filterPriceTo,
+            colorId: this.color,
           },
         })
           .then((response) => { this.productsData = response.data; })
@@ -96,6 +97,9 @@ export default {
       this.loadProducts();
     },
     filterCategoryId() {
+      this.loadProducts();
+    },
+    color() {
       this.loadProducts();
     },
   },
