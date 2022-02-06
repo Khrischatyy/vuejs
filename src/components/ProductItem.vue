@@ -19,7 +19,7 @@
           <label class="colors__label">
             <input class="colors__radio sr-only"
                    type="radio" name="color-item" value="blue" checked="">
-            <span class="colors__value" :style="{ backgroundColor: color.code}">
+            <span class="colors__value" :style="{ backgroundColor: color.color.code}">
                     </span>
           </label>
         </li>
@@ -32,11 +32,6 @@ import numberFormat from '@/helpers/numberFormat';
 import gotoPage from '@/helpers/gotoPage';
 
 export default {
-  data() {
-    return {
-      // color: '#73B6EA',
-    };
-  },
   filters: {
     numberFormat,
   },

@@ -17,7 +17,7 @@
       <fieldset class="form__block">
         <legend class="form__legend">Категория</legend>
         <label class="form__label form__label--select">
-          <select class="form__select"
+          <select @change="getFiltersForCategory(currentCategoryId)" class="form__select"
                   name="category" v-model.number="currentCategoryId">
             <option value="0">Все категории</option>
             <option :value="category.id" v-for="category in categories"
@@ -36,6 +36,23 @@
                      type="radio" name="color" :value="color.id" v-model="currentColor">
               <span class="colors__value"
                     :style="{'background-color': color.code}" >
+                  </span>
+            </label>
+          </li>
+        </ul>
+      </fieldset>
+
+      <fieldset class="form__block" v-for="item in productProps" :key="item.id">
+        <legend class="form__legend">{{ item.title }}</legend>
+        <ul class="check-list">
+          <li class="check-list__item" v-for="i in item.availableValues" :key="i.value">
+            <label class="check-list__label">
+              <input class="check-list__check sr-only"
+                     type="checkbox" name="volume"
+                     :value="i.value" @click="propsAdding(i.value, item.code)">
+              <span class="check-list__desc">
+                    {{i.value}}
+                    <span>{{i.productsCount}}</span>
                   </span>
             </label>
           </li>
@@ -66,9 +83,11 @@ export default {
       currentColor: '',
       categoriesData: null,
       colorsData: null,
+      productProps: null,
+      propsFilterData: {},
     };
   },
-  props: ['priceFrom', 'priceTo', 'categoryId', 'color'],
+  props: ['priceFrom', 'priceTo', 'categoryId', 'color', 'propsData'],
   computed: {
     categories() {
       return this.categoriesData ? this.categoriesData.items : [];
@@ -89,6 +108,16 @@ export default {
     },
   },
   methods: {
+    propsAdding(value, key) {
+      if (this.propsFilterData[key]) {
+        this.propsFilterData[key].push(value);
+      }
+      this.propsFilterData[key] = [value];
+    },
+    getFiltersForCategory(id) {
+      axios.get(`${API_BASE_URL}/api/productCategories/${id}`)
+        .then((response) => { this.productProps = response.data.productProps; });
+    },
     submit() {
       this.$emit('update:priceFrom', this.currentPriceFrom);
       this.$emit('update:priceTo', this.currentPriceTo);

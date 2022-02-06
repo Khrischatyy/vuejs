@@ -11,7 +11,8 @@
     <div class="content__catalog">
       <product-filter :color.sync="color"
                       :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
-                      :category-id.sync="filterCategoryId"></product-filter>
+                      :category-id.sync="filterCategoryId"
+                      :props-data.sync="propsData"></product-filter>
       <section class="catalog">
         <div v-if="productLoading">Загрузка товара...</div>
         <div v-if="productLoadingFailed">Ошибка загрузки
@@ -31,6 +32,7 @@ import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
 import axios from 'axios';
+import qs from 'qs';
 import { API_BASE_URL } from '../config';
 
 export default {
@@ -50,6 +52,7 @@ export default {
       productsData: null,
       productLoading: false,
       productLoadingFailed: false,
+      propsData: {},
     };
   },
   computed: {
@@ -57,7 +60,7 @@ export default {
       return this.productsData
         ? this.productsData.items.map((product) => ({
           ...product,
-          image: product.image.file.url,
+          image: product.preview.file.url,
         }))
         : [];
     },
@@ -75,10 +78,12 @@ export default {
             page: this.page,
             limit: this.productPerPage,
             categoryId: this.filterCategoryId,
-            minPrice: this.filterPriceFrom,
-            maxPrice: this.filterPriceTo,
+            // minPrice: this.filterPriceFrom ? this.filterPriceTo : null,
+            // maxPrice: this.filterPriceTo ? this.filterPriceTo : null,
             colorId: this.color,
+            // props: { length: [1], material: ['test'] },
           },
+          paramsSerializer: (props) => qs.stringify(props, { arrayFormat: 'brackets' }),
         })
           .then((response) => { this.productsData = response.data; })
           .catch(() => { this.productLoadingFailed = true; })
