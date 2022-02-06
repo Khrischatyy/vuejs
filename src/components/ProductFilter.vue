@@ -62,7 +62,8 @@
       <button class="filter__submit button button--primery" type="submit">
         Применить
       </button>
-      <button @click.prevent="reset" class="filter__reset button button--second" type="button">
+      <button @click.prevent="reset" class="filter__reset button button--second" type="button"
+              v-if="priceFrom || priceTo || categoryId || color ">
         Сбросить
       </button>
     </form>

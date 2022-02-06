@@ -47,40 +47,26 @@
                 <li class="colors__item" v-for="color in product.colors" :key="color.id">
                   <label class="colors__label">
                     <input class="colors__radio sr-only"
-                           type="radio" name="color-item" value="blue" checked="">
-                    <span class="colors__value" :style="{ backgroundColor: color.code}">
+                           type="radio" name="color-item"
+                           @click="changeProduct">
+                    <span class="colors__value" :style="{ backgroundColor: color.color.code}">
                     </span>
                   </label>
                 </li>
               </ul>
             </fieldset>
 
-            <fieldset class="form__block">
+            <fieldset class="form__block" v-if="product.mainProp.code !== 'color'">
+
               <legend class="form__legend">Объемб в ГБ:</legend>
 
               <ul class="sizes sizes--primery">
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input class="sizes__radio sr-only" type="radio" name="sizes-item" value="32">
+                <li class="sizes__item" v-for="item in product.offers" :key="item.id">
+                  <label class="sizes__label" v-for="i in item.propValues" :key="i.id">
+                    <input class="sizes__radio sr-only" type="radio" name="sizes-item"
+                            @click="changeProduct(item)">
                     <span class="sizes__value">
-                      32gb
-                    </span>
-                  </label>
-                </li>
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input class="sizes__radio sr-only" type="radio" name="sizes-item" value="64">
-                    <span class="sizes__value">
-                      64gb
-                    </span>
-                  </label>
-                </li>
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input class="sizes__radio sr-only"
-                           type="radio" name="sizes-item" value="128" checked="">
-                    <span class="sizes__value">
-                      128gb
+                      {{i.value}}
                     </span>
                   </label>
                 </li>
@@ -221,13 +207,18 @@ export default {
     },
   },
   methods: {
+    changeProduct(item) {
+      this.product.title = item.title;
+      this.product.price = item.price;
+      console.log(item, this.product);
+    },
     ...mapActions(['addProductToCart']),
     gotoPage,
     addProduct() {
       this.productAdded = false;
       this.productAddSending = true;
 
-      this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
+      this.addProductToCart({ productId: 10, amount: this.productAmount })
         .then(() => {
           this.productAdded = true;
           this.productAddSending = false;
@@ -247,7 +238,7 @@ export default {
       axios.get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
         .then((response) => {
           this.productData = response.data;
-          this.productData.image = response.data.image.file.url;
+          this.productData.image = response.data.preview.file.url;
         })
         .catch(() => { this.productLoadingFailed = true; })
         .then(() => { this.productLoading = false; });

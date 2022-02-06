@@ -26,7 +26,8 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
-            <cart-item v-for="item in products" :key="item.productId" :item="item"></cart-item>
+            <cart-item v-for="item in products"
+                       :key="item.productId" :item="item"></cart-item>
           </ul>
         </div>
 

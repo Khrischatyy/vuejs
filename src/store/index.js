@@ -39,7 +39,7 @@ export default new Vuex.Store({
     },
     syncCartProducts(state) {
       state.cartProducts = state.cartProductsData.map((item) => ({
-        productId: item.product.id,
+        productId: item.id,
         amount: item.quantity,
       }));
     },
@@ -47,12 +47,12 @@ export default new Vuex.Store({
   getters: {
     cartDetailProducts(state) {
       return state.cartProducts.map((i) => {
-        const { product } = state.cartProductsData.find((p) => p.product.id === i.productId);
+        const product = state.cartProductsData.find((p) => p.id === i.productId);
         return {
           ...i,
           product: {
             ...product,
-            image: product.image.file.url,
+            image: product.productOffer.product.preview.file.url,
           },
         };
       });
@@ -95,8 +95,9 @@ export default new Vuex.Store({
     addProductToCart(context, { productId, amount }) {
       return (new Promise((resolve) => setTimeout(resolve, 2000)))
         .then(() => axios.post(`${API_BASE_URL}/api/baskets/products`, {
-          productId,
+          productOfferId: productId,
           quantity: amount,
+          colorId: 6,
         }, {
           params: {
             userAccessKey: context.state.userAccessKey,
@@ -111,7 +112,7 @@ export default new Vuex.Store({
       context.commit('updateCartProductAmount', { productId, amount });
 
       return axios.put(`${API_BASE_URL}/api/baskets/products`, {
-        productId,
+        basketItemId: productId,
         quantity: amount,
       }, {
         params: {
@@ -133,7 +134,7 @@ export default new Vuex.Store({
           userAccessKey: context.state.userAccessKey,
         },
         data: {
-          productId,
+          basketItemId: productId,
         },
       });
     },

@@ -51,51 +51,39 @@
           <div class="cart__options">
             <h3 class="cart__title">Доставка</h3>
             <ul class="cart__options options">
-              <li class="options__item">
+              <li class="options__item" v-for="delivery in deliveryData" :key="delivery.id"
+                  @click="getPayments(delivery.id)">
                 <label class="options__label">
                   <input class="options__radio sr-only" type="radio"
-                         name="delivery" value="0" checked="">
+                         name="delivery" :value="delivery.id"
+                          v-model="formData.paymentTypeId">
                   <span class="options__value">
-                    Самовывоз <b>бесплатно</b>
-                  </span>
-                </label>
-              </li>
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only" type="radio" name="delivery" value="500">
-                  <span class="options__value">
-                    Курьером <b>500 ₽</b>
+                    {{delivery.title}}
+                    <b>{{delivery.price == 0 ? 'Бесплатно' : delivery.price + 'руб.'}}</b>
                   </span>
                 </label>
               </li>
             </ul>
-
+            <div v-if="paymentsData.length > 0">
             <h3 class="cart__title">Оплата</h3>
             <ul class="cart__options options">
-              <li class="options__item">
+              <li class="options__item" v-for="payment in paymentsData" :key="payment.id">
                 <label class="options__label">
-                  <input class="options__radio sr-only" type="radio" name="pay" value="card">
+                  <input class="options__radio sr-only" type="radio" name="pay"
+                         :value="payment.id" v-model="formData.deliveryTypeId">
                   <span class="options__value">
-                    Картой при получении
-                  </span>
-                </label>
-              </li>
-              <li class="options__item">
-                <label class="options__label">
-                  <input class="options__radio sr-only" type="radio" name="pay" value="cash">
-                  <span class="options__value">
-                    Наличными при получении
+                    {{payment.title}}
                   </span>
                 </label>
               </li>
             </ul>
           </div>
         </div>
-
+        </div>
         <div class="cart__block">
           <ul class="cart__orders">
             <li class="cart__order" v-for="item in products" :key="item.productId" :item="item">
-              <h3>{{ item.product.title }}</h3>
+              <h3>{{ item.product.productOffer.title }}</h3>
               <b>{{item.product.price}} ₽ x {{item.amount}}</b>
               <span>Артикул: {{item.product.id}}</span>
             </li>
@@ -135,7 +123,8 @@ export default {
   components: { BaseFormTextarea, BaseFormText },
   data() {
     return {
-      delivery: 500,
+      deliveryData: {},
+      paymentsData: {},
       formData: {
 
       },
@@ -155,6 +144,16 @@ export default {
     },
   },
   methods: {
+    getPayments(deliveryTypeId) {
+      axios.get(`${API_BASE_URL}/api/payments`, {
+        params: {
+          deliveryTypeId,
+        },
+      })
+        .then((response) => {
+          this.paymentsData = response.data;
+        });
+    },
     order() {
       this.formError = {};
       this.formErrorMessage = '';
@@ -180,6 +179,10 @@ export default {
           this.formErrorMessage = error.response.data.error.message;
         });
     },
+  },
+  created() {
+    axios.get(`${API_BASE_URL}/api/deliveries`)
+      .then((response) => { this.deliveryData = response.data; });
   },
 };
 </script>

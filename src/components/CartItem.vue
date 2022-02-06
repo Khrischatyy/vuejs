@@ -6,7 +6,7 @@
            alt="item.product.title">
     </div>
     <h3 class="product__title">
-      {{ item.product.title }}
+      {{ item.product.productOffer.title }}
     </h3>
     <span class="product__code">
                 Артикул:  {{ item.product.id }}
