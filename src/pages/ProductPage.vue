@@ -210,7 +210,6 @@ export default {
     changeProduct(item) {
       this.product.title = item.title;
       this.product.price = item.price;
-      console.log(item, this.product);
     },
     ...mapActions(['addProductToCart']),
     gotoPage,

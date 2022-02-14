@@ -49,7 +49,7 @@
             <label class="check-list__label">
               <input class="check-list__check sr-only"
                      type="checkbox" name="volume"
-                     :value="i.value" @click="propsAdding(i.value, item.code)">
+                     :value="i.value" v-model="propsFilterData">
               <span class="check-list__desc">
                     {{i.value}}
                     <span>{{i.productsCount}}</span>
@@ -85,7 +85,7 @@ export default {
       categoriesData: null,
       colorsData: null,
       productProps: null,
-      propsFilterData: {},
+      propsFilterData: [],
     };
   },
   props: ['priceFrom', 'priceTo', 'categoryId', 'color', 'propsData'],
@@ -109,12 +109,19 @@ export default {
     },
   },
   methods: {
-    propsAdding(value, key) {
-      if (this.propsFilterData[key]) {
-        this.propsFilterData[key].push(value);
-      }
-      this.propsFilterData[key] = [value];
-    },
+    // propsAdding(value, key) {
+    //   const propsFilterData = this.propsFilterData[key];
+    //
+    //   if (propsFilterData) {
+    //     if (propsFilterData.includes(value)) {
+    //       propsFilterData.filter((a) => a !== value);
+    //       return;
+    //     }
+    //     this.propsFilterData[key].push(value);
+    //     return;
+    //   }
+    //   this.propsFilterData[key] = [value];
+    // },
     getFiltersForCategory(id) {
       axios.get(`${API_BASE_URL}/api/productCategories/${id}`)
         .then((response) => { this.productProps = response.data.productProps; });
@@ -124,6 +131,7 @@ export default {
       this.$emit('update:priceTo', this.currentPriceTo);
       this.$emit('update:categoryId', this.currentCategoryId);
       this.$emit('update:color', this.currentColor);
+      this.$emit('update:propsData', this.propsFilterData);
     },
     reset() {
       this.$emit('update:priceFrom', 0);

@@ -20,7 +20,7 @@
       </ul>
 
       <h1 class="content__title">
-        Заказ оформлен <span>№ {{orderInfo.id}}</span>
+        Заказ оформлен <span>№ {{ orderInfo.id }}</span>
       </h1>
     </div>
 
@@ -116,7 +116,7 @@ export default {
         .reduce((acc, item) => (item.quantity) + acc, 0);
     },
   },
-  created() {
+  beforeCreate() {
     if (this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id) {
       this.orderInfo = this.$store.state.orderInfo;
       return;

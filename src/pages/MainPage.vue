@@ -81,7 +81,7 @@ export default {
             // minPrice: this.filterPriceFrom ? this.filterPriceTo : null,
             // maxPrice: this.filterPriceTo ? this.filterPriceTo : null,
             colorId: this.color,
-            // props: { length: [1], material: ['test'] },
+            // props: { length: [1, 2], material: ['test'] },
           },
           paramsSerializer: (props) => qs.stringify(props, { arrayFormat: 'brackets' }),
         })
