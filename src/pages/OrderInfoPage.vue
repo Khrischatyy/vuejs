@@ -19,12 +19,12 @@
         </li>
       </ul>
 
-      <h1 class="content__title">
+      <h1 class="content__title" v-if="orderInfo">
         Заказ оформлен <span>№ {{ orderInfo.id }}</span>
       </h1>
     </div>
 
-    <section class="cart">
+    <section class="cart" v-if="orderInfo">
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <p class="cart__message">
@@ -80,16 +80,18 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <li class="cart__order" v-for="item in orderInfo.basket.items" :key="item.productId">
-              <h3>{{ item.product.title}}</h3>
-              <b>{{item.product.price}} ₽ x {{item.quantity}}</b>
-              <span>Артикул: {{item.product.id}}</span>
+            <li class="cart__order" v-for="item in orderInfo.basket.items" :key="item.id">
+              <h3>{{ item.productOffer.title}}</h3>
+              <b>{{item.productOffer.price}} ₽ x {{item.quantity}}</b>
+              <span>Артикул: {{item.productOffer.id}}</span>
             </li>
           </ul>
 
           <div class="cart__total">
             <p>Доставка: <b>500 ₽</b></p>
-            <p>Итого: <b>{{cartTotalCount}}</b> товара на сумму <b>{{priceWithDelivery}} ₽</b></p>
+            <p>Итого:
+                <b>{{cartTotalCount}}</b> товара на сумму <b>{{priceWithDelivery}} ₽</b>
+            </p>
           </div>
         </div>
       </form>

@@ -78,10 +78,10 @@ export default {
             page: this.page,
             limit: this.productPerPage,
             categoryId: this.filterCategoryId,
-            // minPrice: this.filterPriceFrom ? this.filterPriceTo : null,
-            // maxPrice: this.filterPriceTo ? this.filterPriceTo : null,
+            minPrice: this.filterPriceFrom ? this.filterPriceFrom : {},
+            maxPrice: this.filterPriceTo ? this.filterPriceTo : {},
             colorId: this.color,
-            // props: { length: [1, 2], material: ['test'] },
+            props: this.propsData,
           },
           paramsSerializer: (props) => qs.stringify(props, { arrayFormat: 'brackets' }),
         })
@@ -107,6 +107,9 @@ export default {
     color() {
       this.loadProducts();
     },
+    // propsData() {
+    //   this.loadProducts();
+    // },
   },
   created() {
     this.loadProducts();

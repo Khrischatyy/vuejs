@@ -49,7 +49,7 @@
             <label class="check-list__label">
               <input class="check-list__check sr-only"
                      type="checkbox" name="volume"
-                     :value="i.value" v-model="propsFilterData">
+                     :value="i.value" v-model="propsFilterData[item.code]">
               <span class="check-list__desc">
                     {{i.value}}
                     <span>{{i.productsCount}}</span>
@@ -109,22 +109,16 @@ export default {
     },
   },
   methods: {
-    // propsAdding(value, key) {
-    //   const propsFilterData = this.propsFilterData[key];
-    //
-    //   if (propsFilterData) {
-    //     if (propsFilterData.includes(value)) {
-    //       propsFilterData.filter((a) => a !== value);
-    //       return;
-    //     }
-    //     this.propsFilterData[key].push(value);
-    //     return;
-    //   }
-    //   this.propsFilterData[key] = [value];
-    // },
     getFiltersForCategory(id) {
       axios.get(`${API_BASE_URL}/api/productCategories/${id}`)
-        .then((response) => { this.productProps = response.data.productProps; });
+        .then((response) => { this.productProps = response.data.productProps; })
+        .then(() => {
+          this.propsFilterData = {};
+          /* eslint-disable-next-line */
+          for (const prop of this.productProps) {
+            this.propsFilterData[prop.code] = [];
+          }
+        });
     },
     submit() {
       this.$emit('update:priceFrom', this.currentPriceFrom);
