@@ -1,5 +1,7 @@
 # vuejs project
 
+https://khrischatyy.github.io/techzavrrr/#/
+
 ## Project setup
 ```
 npm install
