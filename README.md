@@ -1,6 +1,6 @@
-# vuejs project
+# Vuejs SPA project
 
-# You can see it from the [link](https://khrischatyy.github.io/techzavrrr/#/)
+## You can see it from the [link](https://khrischatyy.github.io/techzavrrr/#/)
 
 ## Project setup
 ```
