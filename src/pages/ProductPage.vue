@@ -90,11 +90,9 @@
               </div>
 
               <button class="button button--primery" type="submit" :disabled="productAddSending">
-                В корзину
+               {{buttonText}}
               </button>
             </div>
-          <div v-show="productAdded">Товар добавлен в корзину</div>
-          <div v-show="productAddSending">Добавляем товар в корзину</div>
           </form>
         </div>
       </div>
@@ -124,51 +122,15 @@
         </ul>
 
         <div class="item__content">
-          <p>
-            Навигация GPS, ГЛОНАСС, BEIDOU Galileo и QZSS<br>
-            Синхронизация со смартфоном<br>
-            Связь по Bluetooth Smart, ANT+ и Wi-Fi<br>
-            Поддержка сторонних приложений<br>
-          </p>
-
           <a href="#">
             Все характеристики
           </a>
-
-          <h3>Что это?</h3>
-
-          <p>
-            Wahoo ELEMNT BOLT GPS – это велокомпьютер,
-            который позволяет оптимизировать свои велотренировки, сделав их
-            максимально эффективными. Wahoo ELEMNT BOLT GPS синхронизируется с
-            датчиками по объединяя полученную с
-            них информацию. Данные отображаются на дисплее, а также сохраняются
-            на смартфоне. При этом на мобильное
-            устройство можно установить как фирменное приложение, так и различные
-            приложения сторонних разработчиков.
-            Велокомпьютер точно отслеживает местоположение, принимая сигнал с
-            целого комплекса спутников. Эта информация
-            позволяет смотреть уже преодоленные маршруты планировать
-            новые велопрогулки.
-          </p>
-
-          <h3>Дизайн</h3>
-
-          <p>
-            Велокомпьютер Wahoo ELEMNT BOLT очень компактный.
-            Размеры устройства составляют всего 74,6 x 47,3 x 22,1 мм.
-            что не превышает габариты смартфона. Корпус гаджета выполнен
-            из черного пластика. На обращенной к
-            пользователю стороне расположен дисплей диагональю 56 мм. На дисплей
-            выводятся координаты и скорость, а
-            также полученная и синхронизированных датчиков информация:
-            интенсивность, скорость вращения
-            педалей, пульс и т.д. (датчики не входят в комплект поставки).
-            Корпус велокомпьютера имеет степень защиты от
-            влаги IPX7. Это означает, что устройство не боится пыли,
-            а также выдерживает кратковременное (до 30 минут)
-            погружение в воду на глубину не более 1 метра.
-          </p>
+          <div v-for="item in product.specifications" :key="item.id">
+            <h3>{{item.title}}</h3>
+            <p>
+              {{item.value}}
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -189,8 +151,7 @@ export default {
       productData: null,
       productLoading: false,
       productLoadingFailed: false,
-
-      productAdded: false,
+      buttonText: 'В корзину',
       productAddSending: false,
 
     };
@@ -214,13 +175,14 @@ export default {
     ...mapActions(['addProductToCart']),
     gotoPage,
     addProduct() {
-      this.productAdded = false;
       this.productAddSending = true;
+      this.buttonText = 'Добавляем в корзину';
 
       this.addProductToCart({ productId: 10, amount: this.productAmount })
         .then(() => {
           this.productAdded = true;
           this.productAddSending = false;
+          this.buttonText = 'Товар добавлен в корзину';
         });
     },
     plusProduct() {

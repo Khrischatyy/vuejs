@@ -14,6 +14,20 @@
           <span class="form__value">До</span>
         </label>
       </fieldset>
+
+      <fieldset class="form__block">
+        <legend class="form__legend">Колличество товаров на странице</legend>
+        <label class="form__label form__label--select">
+          <select @change="changeTotalCount(currentTotalCount)" class="form__select"
+                  name="currentTotal" v-model.number="currentTotalCount">
+            <option value="3">3 товара</option>
+            <option value="9">9 товаров</option>
+            <option value="18">18 товаров</option>
+            <option value="27">27 товаров</option>
+          </select>
+        </label>
+      </fieldset>
+
       <fieldset class="form__block">
         <legend class="form__legend">Категория</legend>
         <label class="form__label form__label--select">
@@ -86,9 +100,10 @@ export default {
       colorsData: null,
       productProps: null,
       propsFilterData: [],
+      currentTotalCount: 3,
     };
   },
-  props: ['priceFrom', 'priceTo', 'categoryId', 'color', 'propsData'],
+  props: ['priceFrom', 'priceTo', 'categoryId', 'color', 'propsData', 'productPerPage'],
   computed: {
     categories() {
       return this.categoriesData ? this.categoriesData.items : [];
@@ -106,6 +121,9 @@ export default {
     },
     categoryId(value) {
       this.currentCategoryId = value;
+    },
+    productPerPage(value) {
+      this.currentTotalCount = value;
     },
   },
   methods: {
@@ -126,12 +144,14 @@ export default {
       this.$emit('update:categoryId', this.currentCategoryId);
       this.$emit('update:color', this.currentColor);
       this.$emit('update:propsData', this.propsFilterData);
+      this.$emit('update:productPerPage', this.currentTotalCount);
     },
     reset() {
       this.$emit('update:priceFrom', 0);
       this.$emit('update:priceTo', 0);
       this.$emit('update:categoryId', 0);
       this.$emit('update:color', '');
+      this.$emit('update:productPerPage', 3);
     },
     loadCategories() {
       axios.get(`${API_BASE_URL}/api/productCategories`)

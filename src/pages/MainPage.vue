@@ -12,7 +12,8 @@
       <product-filter :color.sync="color"
                       :price-from.sync="filterPriceFrom" :price-to.sync="filterPriceTo"
                       :category-id.sync="filterCategoryId"
-                      :props-data.sync="propsData"></product-filter>
+                      :props-data.sync="propsData"
+                      :product-per-page.sync="productPerPage"></product-filter>
       <section class="catalog">
         <div v-if="productLoading">Загрузка товара...</div>
         <div v-if="productLoadingFailed">Ошибка загрузки
@@ -107,9 +108,9 @@ export default {
     color() {
       this.loadProducts();
     },
-    // propsData() {
-    //   this.loadProducts();
-    // },
+    productPerPage() {
+      this.loadProducts();
+    },
   },
   created() {
     this.loadProducts();

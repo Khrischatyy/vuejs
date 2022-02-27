@@ -3,14 +3,14 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">
+          <router-link class="breadcrumbs__link" :to="{name: 'main'}">
             Каталог
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="cart.html">
+          <router-link class="breadcrumbs__link" :to="{name: 'cart'}">
             Корзина
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">
@@ -52,7 +52,7 @@
             <h3 class="cart__title">Доставка</h3>
             <ul class="cart__options options">
               <li class="options__item" v-for="delivery in deliveryData" :key="delivery.id"
-                  @click="getPayments(delivery.id)">
+                  @click="getPayments(delivery.id, delivery.price)">
                 <label class="options__label">
                   <input class="options__radio sr-only" type="radio"
                          name="delivery" :value="delivery.id"
@@ -63,6 +63,7 @@
                   </span>
                 </label>
               </li>
+              <li v-show="paymentsLoading">{{buttonText}}</li>
             </ul>
             <div v-if="paymentsData.length > 0">
             <h3 class="cart__title">Оплата</h3>
@@ -90,7 +91,7 @@
           </ul>
 
           <div class="cart__total">
-            <p>Доставка: <b>500 ₽</b></p>
+            <p>Доставка: <b>{{delivery}} ₽</b></p>
             <p>Итого: <b>{{ totalCount }}</b>
               товара на сумму <b>{{ priceWithDelivery}} ₽</b></p>
           </div>
@@ -123,8 +124,11 @@ export default {
   components: { BaseFormTextarea, BaseFormText },
   data() {
     return {
+      delivery: 0,
       deliveryData: {},
       paymentsData: {},
+      paymentsLoading: false,
+      buttonText: 'Загрузка способов оплаты',
       formData: {
 
       },
@@ -138,20 +142,24 @@ export default {
     ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalCount: 'cartTotalCount' }),
     priceWithDelivery() {
       if (this.totalPrice) {
-        return this.totalPrice + this.delivery;
+        return +this.totalPrice + +this.delivery;
       }
       return 0;
     },
   },
   methods: {
-    getPayments(deliveryTypeId) {
+    getPayments(deliveryTypeId, price) {
+      this.paymentsLoading = true;
       axios.get(`${API_BASE_URL}/api/payments`, {
         params: {
           deliveryTypeId,
         },
       })
+        .catch(() => { this.buttonText = 'Не удалось загрузить способы оплаты'; })
         .then((response) => {
+          this.delivery = price;
           this.paymentsData = response.data;
+          this.paymentsLoading = false;
         });
     },
     order() {

@@ -42,23 +42,43 @@
         </ul>
       </fieldset>
 
+      <button class="button mainButton" @click="addProduct"
+              type="button" :disabled="productAddSending">
+        {{buttonText}}
+      </button>
+
     </li>
 </template>
 
 <script>
 import numberFormat from '@/helpers/numberFormat';
 import gotoPage from '@/helpers/gotoPage';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       productItem: this.product,
+      buttonText: 'В корзину',
+      productAddSending: false,
     };
   },
   filters: {
     numberFormat,
   },
   methods: {
+    ...mapActions(['addProductToCart']),
+    addProduct() {
+      this.productAddSending = true;
+      this.buttonText = 'Добавляем в корзину';
+
+      this.addProductToCart({ productId: this.productItem.id, amount: 1 })
+        .then(() => {
+          this.productAdded = true;
+          this.productAddSending = false;
+          this.buttonText = 'Товар добавлен в корзину';
+        });
+    },
     changeProduct(item) {
       this.productItem.title = item.title;
       this.productItem.price = item.price;

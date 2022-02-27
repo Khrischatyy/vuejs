@@ -72,7 +72,7 @@
                 Способ оплаты
               </span>
               <span class="dictionary__value">
-                картой при получении
+               {{orderInfo.paymentType}}
               </span>
             </li>
           </ul>
@@ -88,7 +88,7 @@
           </ul>
 
           <div class="cart__total">
-            <p>Доставка: <b>500 ₽</b></p>
+            <p>Доставка: <b>{{orderInfo.deliveryType.price}} ₽</b></p>
             <p>Итого:
                 <b>{{cartTotalCount}}</b> товара на сумму <b>{{priceWithDelivery}} ₽</b>
             </p>
@@ -105,13 +105,12 @@ export default {
   name: 'OrderInfoPage',
   data() {
     return {
-      delivery: 500,
       orderInfo: null,
     };
   },
   computed: {
     priceWithDelivery() {
-      return this.delivery + this.orderInfo.totalPrice;
+      return +this.orderInfo.deliveryType.price + +this.orderInfo.totalPrice;
     },
     cartTotalCount() {
       return this.orderInfo.basket.items

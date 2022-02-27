@@ -18,7 +18,7 @@
         Корзина
       </h1>
       <span class="content__info">
-        3 товара
+        {{productsCount}} товара
       </span>
     </div>
 
@@ -57,6 +57,12 @@ export default {
   components: { CartItem },
   name: 'Cart',
   computed: {
+    productsCount() {
+      return this.products.reduce(
+        (previousValue, currentValue) => previousValue + currentValue.amount,
+        0,
+      );
+    },
     ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice' }),
   },
 };
