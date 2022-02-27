@@ -80,6 +80,7 @@ export default {
         });
     },
     changeProduct(item) {
+      this.productItem.id = item.id;
       this.productItem.title = item.title;
       this.productItem.price = item.price;
     },
