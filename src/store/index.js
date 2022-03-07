@@ -92,12 +92,12 @@ export default new Vuex.Store({
           context.commit('syncCartProducts');
         });
     },
-    addProductToCart(context, { productId, amount }) {
+    addProductToCart(context, { productId, amount, colorId }) {
       return (new Promise((resolve) => setTimeout(resolve, 2000)))
         .then(() => axios.post(`${API_BASE_URL}/api/baskets/products`, {
           productOfferId: productId,
           quantity: amount,
-          colorId: 6,
+          colorId,
         }, {
           params: {
             userAccessKey: context.state.userAccessKey,

@@ -117,7 +117,7 @@ export default {
         .reduce((acc, item) => (item.quantity) + acc, 0);
     },
   },
-  beforeCreate() {
+  created() {
     if (this.$store.state.orderInfo && this.$store.state.orderInfo.id === this.$route.params.id) {
       this.orderInfo = this.$store.state.orderInfo;
       return;

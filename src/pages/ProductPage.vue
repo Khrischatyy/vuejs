@@ -33,12 +33,12 @@
       <div class="item__info">
         <span class="item__code">Артикул: {{product.id}}</span>
         <h2 class="item__title">
-          {{product.title}}
+          {{currentProduct.title}}
         </h2>
         <div class="item__form">
           <form class="form" action="#" method="POST" @submit.prevent="addProduct">
             <b class="item__price">
-              {{product.price | numberFormat}}₽
+              {{currentProduct.price | numberFormat}}₽
             </b>
 
             <fieldset class="form__block">
@@ -48,7 +48,7 @@
                   <label class="colors__label">
                     <input class="colors__radio sr-only"
                            type="radio" name="color-item"
-                           @click="changeProduct">
+                           @click="changeColor(color.color.id)">
                     <span class="colors__value" :style="{ backgroundColor: color.color.code}">
                     </span>
                   </label>
@@ -160,6 +160,12 @@ export default {
     numberFormat,
   },
   computed: {
+    currentProduct() {
+      return this.productData.offers[0];
+    },
+    currentColor() {
+      return this.productData.colors[0];
+    },
     product() {
       return this.productData;
     },
@@ -169,8 +175,12 @@ export default {
   },
   methods: {
     changeProduct(item) {
-      this.product.title = item.title;
-      this.product.price = item.price;
+      this.currentProduct.title = item.title;
+      this.currentProduct.price = item.price;
+      this.currentProduct.id = item.id;
+    },
+    changeColor(color) {
+      this.currentColor.id = color;
     },
     ...mapActions(['addProductToCart']),
     gotoPage,
@@ -178,7 +188,11 @@ export default {
       this.productAddSending = true;
       this.buttonText = 'Добавляем в корзину';
 
-      this.addProductToCart({ productId: 10, amount: this.productAmount })
+      this.addProductToCart({
+        productId: this.currentProduct.id,
+        amount: this.productAmount,
+        colorId: this.currentColor.id,
+      })
         .then(() => {
           this.productAdded = true;
           this.productAddSending = false;

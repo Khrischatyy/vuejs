@@ -8,16 +8,17 @@
     <h3 class="product__title">
       {{ item.product.productOffer.title }}
     </h3>
+
     <span class="product__code">
                 Артикул:  {{ item.product.id }}
               </span>
-
     <product-count :amount="amount" :productId="item.productId"/>
 
     <b class="product__price">
       {{ (item.amount * item.product.price) | numberFormat }} ₽
     </b>
-
+    <div>{{item.product.productOffer.product.mainProp.title}} :
+      {{item.product.productOffer.propValues[0].value}}</div>
     <button class="product__del button-del" type="button"
             aria-label="Удалить товар из корзины"
             @click.prevent="deleteProduct({ productId: item.productId })">
