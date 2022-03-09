@@ -43,7 +43,19 @@
 
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
-              <ul class="colors">
+
+              <ul v-if="product.mainProp.code === 'color'" class="sizes sizes--primery">
+                <li class="sizes__item" v-for="(item, index) in productColor" :key="index">
+                  <label class="sizes__label" v-for="(hex, index) in item.hex" :key="index">
+                    <input class="sizes__radio sr-only" type="radio" name="sizes-item"
+                           @click="changeProduct(item)">
+                    <span class="colors__value" :style="{ backgroundColor: hex}">
+                    </span>
+                  </label>
+                </li>
+              </ul>
+
+              <ul v-if="product.mainProp.code !== 'color'" class="colors">
                 <li class="colors__item" v-for="color in product.colors" :key="color.id">
                   <label class="colors__label">
                     <input class="colors__radio sr-only"
@@ -160,6 +172,35 @@ export default {
     numberFormat,
   },
   computed: {
+    productColor() {
+      return this.product.offers.map((o) => ({
+        offerId: o.id,
+        title: o.title,
+        price: o.price,
+        hex: o.propValues.map((pV) => {
+          let hex = '';
+          switch (pV.value) {
+            case 'Зеленый':
+              hex = '#8be000';
+              break;
+            case 'Оранжевый':
+              hex = '#ff6b00';
+              break;
+            case 'Черный':
+              hex = '#000000';
+              break;
+            case 'Красный':
+              hex = '#f00';
+              break;
+            case 'Серый':
+              hex = '#939393';
+              break;
+            default:
+          }
+          return hex;
+        }),
+      }));
+    },
     currentProduct() {
       return this.productData.offers[0];
     },
@@ -175,9 +216,13 @@ export default {
   },
   methods: {
     changeProduct(item) {
+      console.log(item);
       this.currentProduct.title = item.title;
       this.currentProduct.price = item.price;
       this.currentProduct.id = item.id;
+      if (item.offerId) {
+        this.currentProduct.id = item.offerId;
+      }
     },
     changeColor(color) {
       this.currentColor.id = color;
