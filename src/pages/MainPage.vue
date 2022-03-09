@@ -58,11 +58,20 @@ export default {
   },
   computed: {
     products() {
+      if (!this.color) {
+        return this.productsData
+          ? this.productsData.items.map((product) => ({
+            ...product,
+            image: product.preview.file.url,
+          }))
+          : [];
+      }
       return this.productsData
-        ? this.productsData.items.map((product) => ({
-          ...product,
-          image: product.preview.file.url,
-        }))
+        ? this.productsData.items
+          .filter((p) => p.colors.filter((c) => c.id === this.color)).map((product) => ({
+            ...product,
+            image: product.preview.file.url,
+          }))
         : [];
     },
     countProducts() {
