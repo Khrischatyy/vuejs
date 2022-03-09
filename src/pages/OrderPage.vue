@@ -23,7 +23,7 @@
         Корзина
       </h1>
       <span class="content__info">
-        3 товара
+        {{productsCount}} товара
       </span>
     </div>
 
@@ -56,7 +56,7 @@
                 <label class="options__label">
                   <input class="options__radio sr-only" type="radio"
                          name="delivery" :value="delivery.id"
-                          v-model="formData.paymentTypeId">
+                          v-model="formData.deliveryTypeId">
                   <span class="options__value">
                     {{delivery.title}}
                     <b>{{delivery.price == 0 ? 'Бесплатно' : delivery.price + 'руб.'}}</b>
@@ -71,7 +71,7 @@
               <li class="options__item" v-for="payment in paymentsData" :key="payment.id">
                 <label class="options__label">
                   <input class="options__radio sr-only" type="radio" name="pay"
-                         :value="payment.id" v-model="formData.deliveryTypeId">
+                         :value="payment.id" v-model="formData.paymentTypeId">
                   <span class="options__value">
                     {{payment.title}}
                   </span>
@@ -139,6 +139,12 @@ export default {
     };
   },
   computed: {
+    productsCount() {
+      return this.products.reduce(
+        (previousValue, currentValue) => previousValue + currentValue.amount,
+        0,
+      );
+    },
     ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice', totalCount: 'cartTotalCount' }),
     priceWithDelivery() {
       if (this.totalPrice) {

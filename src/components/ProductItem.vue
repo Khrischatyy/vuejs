@@ -30,8 +30,8 @@
       <fieldset class="form__block" v-if="productItem.mainProp.code !== 'color'">
 
         <ul class="sizes sizes--primery">
-          <li class="sizes__item" v-for="item in productItem.offers" :key="item.id">
-            <label class="sizes__label" v-for="i in item.propValues" :key="i.id">
+          <li class="sizes__item" v-for="(item,index) in productItem.offers" :key="index">
+            <label class="sizes__label" v-for="(i,index) in item.propValues" :key="index">
               <input class="sizes__radio sr-only" type="radio" name="sizes-item"
                      @click="changeProduct(item)">
 
@@ -46,13 +46,11 @@
       <fieldset class="form__block" v-if="productItem.mainProp.code === 'color'">
 
         <ul class="sizes sizes--primery">
-          <li class="sizes__item" v-for="item in productItem.offers" :key="item.id">
-            <label class="sizes__label" v-for="i in item.propValues" :key="i.id">
+          <li class="sizes__item" v-for="(item, index) in productColor" :key="index">
+            <label class="sizes__label" v-for="(hex, index) in item.hex" :key="index">
               <input class="sizes__radio sr-only" type="radio" name="sizes-item"
                      @click="changeProduct(item)">
-
-              <span class="sizes__value">
-                      {{i.value}}
+              <span class="colors__value" :style="{ backgroundColor: hex}">
                     </span>
             </label>
           </li>
@@ -84,6 +82,35 @@ export default {
     numberFormat,
   },
   computed: {
+    productColor() {
+      return this.product.offers.map((o) => ({
+        offerId: o.id,
+        title: o.title,
+        price: o.price,
+        hex: o.propValues.map((pV) => {
+          let hex = '';
+          switch (pV.value) {
+            case 'Зеленый':
+              hex = '#8be000';
+              break;
+            case 'Оранжевый':
+              hex = '#ff6b00';
+              break;
+            case 'Черный':
+              hex = '#000000';
+              break;
+            case 'Красный':
+              hex = '#f00';
+              break;
+            case 'Серый':
+              hex = '#939393';
+              break;
+            default:
+          }
+          return hex;
+        }),
+      }));
+    },
     currentColor() {
       return this.product.colors[0];
     },
@@ -111,6 +138,9 @@ export default {
     changeProduct(item) {
       this.currentProduct.title = item.title;
       this.currentProduct.id = item.id;
+      if (item.offerId) {
+        this.currentProduct.id = item.offerId;
+      }
       this.currentProduct.price = item.price;
     },
     changeColor(color) {
