@@ -4,18 +4,17 @@
         <img :src="productItem.image" :alt="productItem.title">
       </router-link>
 
-      <h3 class="catalog__title">
+      <h3 class="catalog__title" v-if="currentProduct">
         <a href="#">
           {{ currentProduct.title }}
         </a>
       </h3>
 
-      <span class="catalog__price">
+      <span class="catalog__price"  v-if="currentProduct">
               {{ currentProduct.price | numberFormat }} руб.
             </span>
 
-      <ul class="colors colors--black" style="margin-bottom: 10px"
-          v-if="productItem.mainProp.code !== 'color' ">
+      <ul class="colors colors--black" style="margin-bottom: 10px">
         <li class="colors__item" v-for="color in productItem.colors" :key="color.id">
           <label class="colors__label">
             <input class="colors__radio sr-only"
@@ -27,30 +26,16 @@
         </li>
       </ul>
 
-      <fieldset class="form__block" v-if="productItem.mainProp.code !== 'color'">
+      <fieldset class="form__block">
 
         <ul class="sizes sizes--primery">
           <li class="sizes__item" v-for="(item,index) in productItem.offers" :key="index">
-            <label class="sizes__label" v-for="(i,index) in item.propValues" :key="index">
+            <label class="sizes__label" v-for="(i,ind) in item.propValues" :key="ind">
               <input class="sizes__radio sr-only" type="radio" name="sizes-item"
                      @click="changeProduct(item)">
 
               <span class="sizes__value">
                       {{i.value}}
-                    </span>
-            </label>
-          </li>
-        </ul>
-      </fieldset>
-
-      <fieldset class="form__block" v-if="productItem.mainProp.code === 'color'">
-
-        <ul class="sizes sizes--primery">
-          <li class="sizes__item" v-for="(item, index) in productColor" :key="index">
-            <label class="sizes__label" v-for="(hex, index) in item.hex" :key="index">
-              <input class="sizes__radio sr-only" type="radio" name="sizes-item"
-                     @click="changeProduct(item)">
-              <span class="colors__value" :style="{ backgroundColor: hex}">
                     </span>
             </label>
           </li>
@@ -76,47 +61,18 @@ export default {
       productItem: this.product,
       buttonText: 'В корзину',
       productAddSending: false,
+      currentColor: null,
+      currentProduct: null,
     };
   },
   filters: {
     numberFormat,
   },
-  computed: {
-    productColor() {
-      return this.product.offers.map((o) => ({
-        offerId: o.id,
-        title: o.title,
-        price: o.price,
-        hex: o.propValues.map((pV) => {
-          let hex = '';
-          switch (pV.value) {
-            case 'Зеленый':
-              hex = '#8be000';
-              break;
-            case 'Оранжевый':
-              hex = '#ff6b00';
-              break;
-            case 'Черный':
-              hex = '#000000';
-              break;
-            case 'Красный':
-              hex = '#f00';
-              break;
-            case 'Серый':
-              hex = '#939393';
-              break;
-            default:
-          }
-          return hex;
-        }),
-      }));
-    },
-    currentColor() {
-      return this.product.colors[0];
-    },
-    currentProduct() {
-      return this.product.offers[0];
-    },
+  mounted() {
+    // eslint-disable-next-line prefer-destructuring
+    this.currentColor = this.product.colors[0];
+    // eslint-disable-next-line prefer-destructuring
+    this.currentProduct = this.product.offers[0];
   },
   methods: {
     ...mapActions(['addProductToCart']),
