@@ -71,8 +71,7 @@ export default {
   mounted() {
     // eslint-disable-next-line prefer-destructuring
     this.currentColor = this.product.colors[0];
-    // eslint-disable-next-line prefer-destructuring
-    this.currentProduct = this.product.offers[0];
+    this.currentProduct = { ...this.product.offers[0] };
   },
   methods: {
     ...mapActions(['addProductToCart']),
@@ -92,12 +91,9 @@ export default {
         });
     },
     changeProduct(item) {
-      this.currentProduct.title = item.title;
-      this.currentProduct.id = item.id;
-      if (item.offerId) {
-        this.currentProduct.id = item.offerId;
-      }
-      this.currentProduct.price = item.price;
+      this.$set(this.currentProduct, 'title', item.title);
+      this.$set(this.currentProduct, 'id', item.id);
+      this.$set(this.currentProduct, 'price', item.price);
     },
     changeColor(color) {
       this.currentColor.id = color;

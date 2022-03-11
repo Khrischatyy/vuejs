@@ -30,8 +30,8 @@
         </div>
       </div>
 
-      <div class="item__info">
-        <span class="item__code">Артикул: {{product.id}}</span>
+      <div class="item__info" v-if="currentProduct">
+        <span class="item__code">Артикул: {{currentProduct.id}}</span>
         <h2 class="item__title">
           {{currentProduct.title}}
         </h2>
@@ -44,18 +44,7 @@
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
 
-              <ul v-if="product.mainProp.code === 'color'" class="sizes sizes--primery">
-                <li class="sizes__item" v-for="(item, index) in productColor" :key="index">
-                  <label class="sizes__label" v-for="(hex, index) in item.hex" :key="index">
-                    <input class="sizes__radio sr-only" type="radio" name="sizes-item"
-                           @click="changeProduct(item)">
-                    <span class="colors__value" :style="{ backgroundColor: hex}">
-                    </span>
-                  </label>
-                </li>
-              </ul>
-
-              <ul v-if="product.mainProp.code !== 'color'" class="colors">
+              <ul class="colors">
                 <li class="colors__item" v-for="color in product.colors" :key="color.id">
                   <label class="colors__label">
                     <input class="colors__radio sr-only"
@@ -68,9 +57,9 @@
               </ul>
             </fieldset>
 
-            <fieldset class="form__block" v-if="product.mainProp.code !== 'color'">
+            <fieldset class="form__block">
 
-              <legend class="form__legend">Объемб в ГБ:</legend>
+              <legend class="form__legend">{{product.mainProp.title}}:</legend>
 
               <ul class="sizes sizes--primery">
                 <li class="sizes__item" v-for="item in product.offers" :key="item.id">
@@ -165,45 +154,13 @@ export default {
       productLoadingFailed: false,
       buttonText: 'В корзину',
       productAddSending: false,
-
+      currentProduct: null,
     };
   },
   filters: {
     numberFormat,
   },
   computed: {
-    productColor() {
-      return this.product.offers.map((o) => ({
-        offerId: o.id,
-        title: o.title,
-        price: o.price,
-        hex: o.propValues.map((pV) => {
-          let hex = '';
-          switch (pV.value) {
-            case 'Зеленый':
-              hex = '#8be000';
-              break;
-            case 'Оранжевый':
-              hex = '#ff6b00';
-              break;
-            case 'Черный':
-              hex = '#000000';
-              break;
-            case 'Красный':
-              hex = '#f00';
-              break;
-            case 'Серый':
-              hex = '#939393';
-              break;
-            default:
-          }
-          return hex;
-        }),
-      }));
-    },
-    currentProduct() {
-      return this.productData.offers[0];
-    },
     currentColor() {
       return this.productData.colors[0];
     },
@@ -216,13 +173,9 @@ export default {
   },
   methods: {
     changeProduct(item) {
-      console.log(item);
-      this.currentProduct.title = item.title;
-      this.currentProduct.price = item.price;
-      this.currentProduct.id = item.id;
-      if (item.offerId) {
-        this.currentProduct.id = item.offerId;
-      }
+      this.$set(this.currentProduct, 'title', item.title);
+      this.$set(this.currentProduct, 'id', item.id);
+      this.$set(this.currentProduct, 'price', item.price);
     },
     changeColor(color) {
       this.currentColor.id = color;
@@ -259,6 +212,8 @@ export default {
         .then((response) => {
           this.productData = response.data;
           this.productData.image = response.data.preview.file.url;
+          // eslint-disable-next-line prefer-destructuring
+          this.currentProduct = { ...this.productData.offers[0] };
         })
         .catch(() => { this.productLoadingFailed = true; })
         .then(() => { this.productLoading = false; });
