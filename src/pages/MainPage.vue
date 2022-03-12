@@ -68,7 +68,7 @@ export default {
       }
       return this.productsData
         ? this.productsData.items
-          .filter((p) => p.colors.filter((c) => c.id === this.color)).map((product) => ({
+          .filter((p) => p.colors.some((c) => c.id === this.color)).map((product) => ({
             ...product,
             image: product.preview.file.url,
           }))

@@ -4,14 +4,20 @@
       <use xlink:href="#icon-cart"></use>
     </svg>
     <span class="header__count"
-          aria-label="Количество товаров">{{ $store.state.cartProducts.length }}</span>
+          aria-label="Количество товаров">{{ totalCount }}</span>
   </router-link>
 
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Cartindecator',
+  computed: {
+    ...mapGetters({ totalCount: 'cartTotalCount' }),
+  },
 };
 </script>
 

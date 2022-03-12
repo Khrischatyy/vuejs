@@ -109,7 +109,7 @@
         </ul>
 
         <span class="footer__copyright">
-        © 2020 Технозавррр
+        © {{year}} Технозавррр
       </span>
       </div>
     </footer>
@@ -131,6 +131,11 @@ export default {
     }
 
     this.loadCart();
+  },
+  computed: {
+    year() {
+      return (new Date()).getFullYear();
+    },
   },
   methods: {
     ...mapActions(['loadCart']),
