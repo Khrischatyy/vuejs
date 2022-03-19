@@ -18,7 +18,7 @@
       <fieldset class="form__block">
         <legend class="form__legend">Колличество товаров на странице</legend>
         <label class="form__label form__label--select">
-          <select @change="changeTotalCount(currentTotalCount)" class="form__select"
+          <select class="form__select"
                   name="currentTotal" v-model.number="currentTotalCount">
             <option value="3">3 товара</option>
             <option value="9">9 товаров</option>
