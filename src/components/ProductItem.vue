@@ -88,6 +88,11 @@ export default {
           this.productAdded = true;
           this.productAddSending = false;
           this.buttonText = 'Товар добавлен в корзину';
+        })
+        .catch(() => {
+          this.productAdded = false;
+          this.productAddSending = false;
+          this.buttonText = 'Ошибка, выберите цвет';
         });
     },
     changeProduct(item) {

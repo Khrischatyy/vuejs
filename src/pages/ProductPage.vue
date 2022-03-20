@@ -192,9 +192,14 @@ export default {
         colorId: this.currentColor.id,
       })
         .then(() => {
-          this.productAdded = true;
-          this.productAddSending = false;
+          this.productAdded = false;
+          this.productAddSending = true;
           this.buttonText = 'Товар добавлен в корзину';
+        })
+        .catch(() => {
+          this.productAdded = false;
+          this.productAddSending = false;
+          this.buttonText = 'Ошибка, выберите цвет';
         });
     },
     plusProduct() {
